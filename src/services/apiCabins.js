@@ -10,14 +10,36 @@ export async function getCabins() {
 }
 
 export async function createCabin(newCabin) {
+  const imageName = `${Math.random()}-${newCabin.image.name}`.replaceAll(
+    "/",
+    ""
+  );
+  const imagePath = `${
+    import.meta.env.VITE_SUPABASE_URL
+  }/storage/v1/object/public/cabin-images/${imageName}`;
+
+  // Create cabin
   const { data, error } = await supabase
     .from("cabins")
-    .insert([newCabin])
+    .insert([{ ...newCabin, image: imagePath }])
     .select();
 
   if (error) {
     console.error(error);
     throw new Error("Cabins could not be created");
+  }
+
+  // Upload image
+  const { error: storageError } = await supabase.storage
+    .from("cabin-images")
+    .upload(imageName, newCabin.image);
+  if (storageError) {
+    // Handle error
+    await supabase.from("cabins").delete().eq("id", data.id);
+    console.error(storageError);
+    throw new Error(
+      "Cabin image could not be uploaded and the cabin was not created"
+    );
   }
 
   return data;
