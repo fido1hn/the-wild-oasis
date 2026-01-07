@@ -26,7 +26,6 @@ export async function createEditCabin(newCabin, id = null) {
 
   // Create cabin
   if (!id) {
-    console.log("creating cabin");
     query = query.insert([{ ...newCabin, image: imagePath }]);
   }
 
