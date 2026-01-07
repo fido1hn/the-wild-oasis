@@ -21,7 +21,7 @@ function Cabins() {
           Add new cabin
         </Button>
 
-        {showForm && <CreateCabinForm />}
+        {showForm && <CreateCabinForm cabinToEdit={{}} />}
       </Row>
     </>
   );
