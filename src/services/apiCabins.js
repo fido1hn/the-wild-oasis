@@ -42,6 +42,7 @@ export async function createEditCabin(newCabin, id = null) {
     throw new Error("Cabins could not be created");
   }
 
+  // No need to upload image for cabins with images(when duplicating & editing)
   if (hasImagePath) return data;
 
   // Upload image
