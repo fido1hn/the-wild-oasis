@@ -31,7 +31,6 @@ export async function createEditCabin(newCabin, id = null) {
 
   // Edit cabin
   if (id) {
-    console.log("editing cabin");
     query = query.update({ ...newCabin, image: imagePath }).eq("id", id);
   }
 
